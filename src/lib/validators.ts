@@ -1,0 +1,2 @@
+import { z } from "zod";
+export const orderSchema = z.object({ customerName:z.string().trim().min(2).max(100), email:z.string().email().max(200), phone:z.string().trim().min(9).max(16), address:z.string().trim().min(8).max(300), note:z.string().max(500).optional(), items:z.array(z.object({productId:z.string().min(1),quantity:z.number().int().min(1).max(20)})).min(1).max(30) });
