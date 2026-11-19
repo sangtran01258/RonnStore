@@ -1,0 +1,4 @@
+import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+export const dynamic = "force-dynamic";
+export async function GET(request:Request){try{const {searchParams}=new URL(request.url);const q=searchParams.get("q")?.trim();const category=searchParams.get("category");const products=await prisma.product.findMany({where:{...(category&&category!=="Tất cả"?{category}:{}),...(q?{OR:[{name:{contains:q,mode:"insensitive"}},{brand:{contains:q,mode:"insensitive"}}]}:{})},orderBy:[{featured:"desc"},{createdAt:"desc"}]});return NextResponse.json({products});}catch{return NextResponse.json({error:"Không thể tải sản phẩm."},{status:500});}}
